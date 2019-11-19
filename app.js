@@ -1,6 +1,9 @@
 ﻿var express = require('express');
 var app = express();
 
+const graphqlHTTP = require('express-graphql')
+const schema = require('./schema/schema');
+
 let count = 0;
 
 app.get('/', function (req, res) {
@@ -14,6 +17,11 @@ app.listen(3000, function () {
 
 app.use('/static', express.static('public'));
 
-app.use(function (req, res, next) {
-  res.status(404).send('Sorry cant find that!');
-});
+// app.use(function (req, res, next) {
+//   res.status(404).send('Sorry cant find that!');
+// });
+
+app.use('/graphql', graphqlHTTP({
+  schema,
+  graphiql: true,
+}))
